@@ -1,0 +1,42 @@
+#!/bin/ash
+set -e
+[ $DEBUG ] && set -x
+
+pip-install \
+    --upgrade \
+    --requirement requirements/dev.update.txt \
+    --requirement requirements/test.update.txt \
+    --requirement requirements/base.update.txt
+
+pip_save_requirements() {
+    env="$1"
+    shift
+    source="$1"
+    if [ "$source" == "" ] || [ "${source:0:2}" == "--" ];then
+        source="requirements/$env.update.txt"
+    else
+        shift
+    fi
+    dest="$1"
+    if [ "$dest" == "" ] || [ "${dest:0:2}" == "--" ];then
+        dest="requirements/$env.txt"
+    else
+        shift
+    fi
+    echo "Freezing $env to $dest:"
+    freeze="$(pip freeze)"
+    tmp=$(mktemp)
+    while read line;do
+        package="$(echo "$line" | sed -En "s|([^=\<\>]+).*|\1|p")"
+        if [ "$package" != "$line" ];then
+            package="$(echo "$freeze" | grep -ie "^${package}==.*$" | sed -n "s|${package}|${package}|pi" )"
+        fi
+        echo "$package" >> $tmp
+    done < $source
+    cp -f $tmp $dest
+    rm $tmp
+}
+
+pip_save_requirements base
+pip_save_requirements test
+pip_save_requirements dev

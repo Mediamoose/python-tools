@@ -1,0 +1,10 @@
+stages:
+  - build
+
+example build:
+  stage: build
+  script:
+    - make build
+    - make cleanup
+  tags:
+    - docker

@@ -1,0 +1,16 @@
+#!/bin/ash
+set -e
+[ $DEBUG ] && set -x
+
+if which pre-manage-$1-hook >/dev/null ;then
+    echo "Executing 'pre-manage-$1-hook'..."
+    pre-manage-$1-hook
+fi
+
+cd /project/src
+python manage.py $@
+
+if which post-manage-$1-hook;then
+    echo "Executing 'post-manage-$1-hook'..."
+    post-manage-$1-hook
+fi

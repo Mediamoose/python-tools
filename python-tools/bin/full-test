@@ -1,0 +1,13 @@
+#!/bin/ash
+set -e
+[ $DEBUG ] && set -x
+
+echo -n "flake8 ... "
+flake8 $1
+echo "Done."
+echo -n "isort-check ... "
+isort-check $1
+echo "Done."
+echo n "pytest ... "
+pytest $1
+echo "Done."
