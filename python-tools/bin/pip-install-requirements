@@ -1,0 +1,8 @@
+#!/bin/ash
+set -e
+[ $DEBUG ] && set -x
+
+pip-install \
+    --requirement requirements/dev.txt \
+    --requirement requirements/test.txt \
+    --requirement requirements/base.txt

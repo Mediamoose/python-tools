@@ -1,0 +1,14 @@
+#!/bin/ash
+set -e
+[ $DEBUG ] && set -x
+
+if [[ $1 ]];then
+    test_path="/$1"
+    shift
+fi
+
+options="--cov-report term-missing --cov-report term:skip-covered --cov=/project/src${test_path} -n auto -l --no-migrations --ds=main.settings.testing -rw -W ignore -W module::UserWarning"
+if [ "$WRITE_COVERAGE" == "true" ];then
+    options="$options --cov-report html:coverage/html --cov-report xml:coverage/cov.xml --cov-report annotate:coverage/annotate"
+fi
+py.test /project/src${test_path} $options $@
