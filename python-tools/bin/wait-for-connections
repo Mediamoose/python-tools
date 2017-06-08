@@ -1,0 +1,10 @@
+#!/bin/ash
+set -e
+[ $DEBUG ] && set -x
+
+echo "$@" | awk -F',' '{for (i = 1 ; i <= NF ; i++) print $i}' | while read connection; do
+    if [ "$connection" == "" ];then
+        continue
+    fi
+    wait-for-connection $connection
+done

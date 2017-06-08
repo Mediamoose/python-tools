@@ -1,0 +1,48 @@
+#!/bin/ash
+set -e
+[ $DEBUG ] && set -x
+
+host_port="$1"
+host="$(echo "$host_port" | sed -E 's/(.*):.*/\1/g')"
+port="$(echo "$host_port" | sed -E 's/.*:(.*)/\1/g')"
+
+timeout=${2:-100}
+
+if [ "$host" == "" ] || [ "$port" == "" ] || [ "$host" == "$port" ] || [ "${host:0:1}" == "-" ] || [ "${port:0:1}" == "-" ];then
+    echo "Usage: wait-for-connection <host/addr>:<port> [timeout]"
+    exit 1
+fi
+
+addr="$host"
+if [ "$(echo $host | sed -En 's/([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/\1/p')" == "" ];then
+    addr="$(getent hosts $host | awk '{print $1}')"
+fi
+
+if [ "$addr" == "" ];then
+    echo "Invalid host: $host"
+    exit 1
+fi
+
+host_string="$addr:$port"
+if [ "$host" != "$addr" ];then
+    host_string="$host ($host_string)"
+fi
+
+if [ "$timeout" != "0" ];then
+    _timeout=0
+fi
+
+timeout_string="waiting forever"
+while ! nc -zw3 $addr $port;do
+    sleep 1
+    if [ "$_timeout" != "" ];then
+        timeout_string="timeout in $(expr $timeout - $_timeout)"
+    fi
+    _timeout=$(expr $_timeout + 1)
+    echo "Waiting for $host_string... $timeout_string"
+    [ "$_timeout" != "$timeout" ] && continue
+    echo "Waiting for $host_string... timed out"
+    exit 1
+done
+
+echo "Connection to $host_string succeeded."

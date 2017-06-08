@@ -1,0 +1,8 @@
+flake8==3.*
+freezegun==0.*
+isort==4.*
+model-mommy==1.*
+pytest-cov==2.*
+pytest-django==3.*
+pytest-warnings==0.*
+pytest-xdist==1.*
