@@ -6,9 +6,10 @@ if [ -f /usr/local/assets/entrypoint.sh ];then
     source /usr/local/assets/entrypoint.sh ''
 fi
 
-if [[ "$DJANGO_MEDIA_ROOT" ]];then
-    mkdir -p $DJANGO_MEDIA_ROOT
-    chmod 777 -R $DJANGO_MEDIA_ROOT
+export DJANGO_PREPARE_DIRECTORIES="${DJANGO_PREPARE_DIRECTORIES:-$DJANGO_MEDIA_ROOT}"
+if [[ "$DJANGO_PREPARE_DIRECTORIES" ]];then
+    mkdir -p ${DJANGO_PREPARE_DIRECTORIES//,/ }
+    chmod 777 -R ${DJANGO_PREPARE_DIRECTORIES//,/ }
 fi
 
 if which pre-$1-hook >/dev/null ;then
