@@ -27,7 +27,7 @@ while [ "${1:0:2}" == "--" ];do
     if [ "$val" == "true" ];then
         val=''
     fi
-    if which $cmd 2>/dev/null &>2;then
+    if which $cmd 2>&1 >/dev/null;then
         $cmd $val
     fi
 done
