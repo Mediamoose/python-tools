@@ -33,6 +33,7 @@ pip_save_requirements() {
         fi
         echo "$package" >> $tmp
     done < $source
+    chmod 644 $tmp
     cp -f $tmp $dest
     rm $tmp
 }
