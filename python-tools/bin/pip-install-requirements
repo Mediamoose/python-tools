@@ -2,6 +2,8 @@
 set -e
 [ $DEBUG ] && set -x
 
+cat requirements/dev.txt requirements/test.txt requirements/base.txt | grep -E '^git\+' >/dev/null && export APK_BUILD_DEPS="$APK_BUILD_DEPS git"
+
 pip-install \
     --requirement requirements/dev.txt \
     --requirement requirements/test.txt \
