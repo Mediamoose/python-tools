@@ -2,4 +2,4 @@
 set -e
 [ $DEBUG ] && set -x
 
-exec manage collectstatic --no-input
+exec manage collectstatic --no-input $@
