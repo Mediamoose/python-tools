@@ -5,7 +5,7 @@ set -e
 host="$(echo "$1" | sed -E 's/([^:]*):[^:]*(:[^:]*)?/\1/g')"
 port="$(echo "$1" | sed -E 's/[^:]*:([^:]*)(:[^:]*)?/\1/g')"
 timeout="$(echo "$1" | sed -E 's/[^:]*:[^:]*(:([^:]*))?/\2/g')"
-timeout=${timeout:-100}
+timeout=${timeout:-0}
 
 if [[ "${2}" != "" ]];then
     echo "DEPRECATION WARNING: Use 'wait-for-connection <host/addr>:<port>:<timeout>'"
