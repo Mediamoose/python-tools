@@ -6,6 +6,12 @@ rm -rf /usr/python-tools
 mv $(dirname $0)/python-tools /usr/python-tools
 rm -rf $(dirname $0)
 
+for file in $(ls "/usr/python-tools/project");do
+    if [ ! -e "/project/$file" ];then
+        ln -sf "/usr/python-tools/project/$file" "/project/$file"
+    fi
+done
+
 if [ "$1" != "" ] && [ -e "/usr/python-tools/$1/entrypoint.sh" ];then
     ln -sf /usr/python-tools/$1/entrypoint.sh /docker-entrypoint.sh
 fi
