@@ -1,0 +1,9 @@
+#!/bin/ash
+set -e
+[ $DEBUG ] && set -x
+
+if [ -d src ];then
+    cd src
+fi
+
+py.test $@
