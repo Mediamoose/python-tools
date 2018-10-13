@@ -42,7 +42,7 @@ while ! nc -zw3 $addr $port;do
     if [ "$_timeout" != "" ];then
         timeout_string="timeout in $(expr $timeout - $_timeout)"
     fi
-    _timeout=$(expr $_timeout + 1)
+    _timeout=$(expr ${_timeout:-0} + 1)
     echo "Waiting for $host_string... $timeout_string"
     [ "$_timeout" != "$timeout" ] && continue
     echo "Waiting for $host_string... timed out"
