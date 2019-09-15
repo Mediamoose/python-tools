@@ -7,8 +7,8 @@ mv $(dirname $0)/python-tools /usr/python-tools
 rm -rf $(dirname $0)
 
 for file in $(ls "/usr/python-tools/project");do
-    if [ ! -e "/project/$file" ];then
-        ln -sf "/usr/python-tools/project/$file" "/project/$file"
+    if [ ! -e "$PWD/$file" ];then
+        ln -sf "/usr/python-tools/project/$file" "$PWD/$file"
     fi
 done
 
