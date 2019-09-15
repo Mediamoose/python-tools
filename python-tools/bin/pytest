@@ -1,18 +1,9 @@
 #!/bin/ash
 set -e
-[ $DEBUG ] && set -x
+[[ $DEBUG ]] && set -x
 
-if [[ "${1:0:1}" == "-" ]] || [[ "$2" != "" ]];then
-    echo "ERROR: invalid module"
-    echo ""
-    echo "Usage: pytest [module]"
-    echo "Add options using the PYTEST_ADDOPTS environment variable."
-    exit 1
+cd src
+if [ "$WRITE_COVERAGE" == "true" ];then
+    options="$options --cov-report html:../coverage/html --cov-report xml:../coverage/cov.xml --cov-report annotate:../coverage/annotate"
 fi
-
-args="$@"
-if [[ "$1" != "" ]];then
-    args="src/$1"
-fi
-
-py.test -x -s -n 0 $args
+py.test $options $@
