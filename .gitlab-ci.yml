@@ -1,10 +1,12 @@
+image: mediamoose/toolbox:1.17
+
 stages:
   - build
 
 example build:
   stage: build
+  tags:
+    - docker
   script:
     - make build
     - make cleanup
-  tags:
-    - docker
