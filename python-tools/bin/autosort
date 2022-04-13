@@ -2,4 +2,4 @@
 set -e
 [ $DEBUG ] && set -x
 
-isort -rc ${@:-/project/src}
+isort ${@:-/project/src}
