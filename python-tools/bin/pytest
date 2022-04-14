@@ -2,17 +2,12 @@
 set -e
 [ $DEBUG ] && set -x
 
-if [[ "${1:0:1}" == "-" ]] || [[ "$2" != "" ]];then
-    echo "ERROR: invalid module"
-    echo ""
-    echo "Usage: pytest [module]"
-    echo "Add options using the PYTEST_ADDOPTS environment variable."
-    exit 1
+if [[ $1 ]];then
+    test_path="/$1"
+    shift
 fi
 
-args="$@"
-if [[ "$1" != "" ]];then
-    args="src/$1"
+if [ "$WRITE_COVERAGE" == "true" ];then
+    options="--cov=/project/src${test_path}"
 fi
-
-py.test -x -s -n 0 $args
+py.test /project/src${test_path} $options $@
