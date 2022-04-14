@@ -7,7 +7,6 @@ if [[ $1 ]];then
     shift
 fi
 
-if [ "$WRITE_COVERAGE" == "true" ];then
-    options="--cov=/project/src${test_path}"
-fi
+options="--cov=/project/src${test_path}"
+
 py.test /project/src${test_path} $options $@
