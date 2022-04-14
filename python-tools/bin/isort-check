@@ -1,5 +1,0 @@
-#!/bin/ash
-set -e
-[ $DEBUG ] && set -x
-
-isort --check-only -q -rc /project/src/$1
